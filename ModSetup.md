@@ -53,6 +53,8 @@ forge提供的isClientSide为一个布尔值，true对应客户端，false对应
 - **物理服务端** - 通常称为专用服务器，物理服务器是每当您启动任何专用 _服务器_ 可执行文件或 JAR （`minecraft_server.jar`） 时运行的整个程序，该可执行文件或 JAR （`minecraft_server.jar`） 不会显示可播放的 GUI。
 - **逻辑服务端** - 逻辑服务器负责运行游戏 _逻辑_ ：生物生成、天气、更新库存、健康、AI 和所有其他游戏机制。逻辑服务器存在于物理服务器中，但也可以与逻辑客户端一起在物理客户端中作为单玩家世界运行。逻辑服务器始终在名为 `Server Thread`的线程中运行。<u> 也就是说，单人游戏里存在这样的一个内置服务器，执行多人游戏中服务器的功能.</u>
 - **逻辑客户端** - 逻辑客户端接受来自播放器的输入并将其中继到 _逻辑_ 服务器。此外，它还从逻辑服务器接收信息，并以图形方式提供给玩家。逻辑客户端在 `Render Thread` 中运行，尽管通常会生成几个其他线程来处理音频和块渲染批处理等事情。
+	<p style="color: aqua; margin-left: 20px">
+	以下是一个闪电荆棘里的简单案例 </p>
 ```
 //之前的一些关于isClientSide的应用
 if(!pAttacker.level.isClientSide() &&pTarget!=null) {  
@@ -65,7 +67,21 @@ EntityType.LIGHTNING_BOLT.spawn(world, null, null, position, MobSpawnType.TRIGGE
 ```
 ## Events
 源自我对[Events/1.18 - Forge Community Wiki (gemwire.uk)](https://forge.gemwire.uk/wiki/Events/1.18)以及Kaupenjoe(Youtube上做模组制作教程播放量最多的人)教程的理解
+<p><span style="color:brown">事件（Events）
+</span>是发生在<span style="color:brown">事件总线（eventBus）
+</span>上的、用来激活那些
+<span style="color:brown">已注册过的监听器（registered listener）</span>，让他们改变状态或者实现一些行为的一种信号</p>
+这是forge允许模组和原版内容/资源/行为进行互动的最初级的方式，forge提供了一个事件数组，在其中的事件会被不同的游戏内容而激活。
 
+当然，你也可以通过创建一个Events的子类来自定义一个事件，用于本模组或者关联模组的使用。这可以提高兼容性。
+
+泛型事件：一些事件提供了泛型，允许开发者筛选对应类型（比如Block,Entity等）的事件，它们均实现了IGenericEvents<\T>接口，这些泛型事件类还可以通过接口里定义的```IGenericEvent#getType()```方法来取得泛型类型（有点类似于反射最初的应用）。如果我们开发者需要写一个泛型事件，需要实现GenericEvents<\T>接口而不是实现 IGenericEvent接口。
+<p style="color:red;font-weight:bold;font-size:40px">-----Important ！-----
+</p>
+1.事件的泛型必须精确匹配监听器的泛型。
+2.监听Object的监听器不会被某个精确指定了类型的事件（例如
+```AttachCapabilitiesEvent<\ItemStack>```）激活。
+3.如果事件监听器是被EventBus的实例方法register<\Object>所注册的，那么该监听器会监听提供了通配符 `<?>`的泛型事件，并忽略嵌套的泛型。
 ## Registration
 源自我对[Registration/1.18 - Forge Community Wiki (gemwire.uk)](https://forge.gemwire.uk/wiki/Registration/1.18)以及Kaupenjoe教程的理解
 
