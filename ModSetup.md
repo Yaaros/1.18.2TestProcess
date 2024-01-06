@@ -89,3 +89,6 @@ EntityType.LIGHTNING_BOLT.spawn(world, null, null, position, MobSpawnType.TRIGGE
 
 ## Config
 源自我对[Configs/1.18 - Forge Community Wiki (gemwire.uk)](https://forge.gemwire.uk/wiki/Configs/1.18)的理解
+
+## 论外更新
+导入了fastutil
